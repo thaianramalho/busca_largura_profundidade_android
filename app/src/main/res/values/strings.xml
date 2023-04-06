@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Busca em largura e profundidade</string>
+    <string name="raiz">Insira a raiz da árvore</string>
+    <string name="alvo">Insira o alvo da busca</string>
+</resources>
