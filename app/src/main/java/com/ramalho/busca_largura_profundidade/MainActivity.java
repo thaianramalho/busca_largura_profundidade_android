@@ -72,10 +72,9 @@ public class MainActivity extends AppCompatActivity {
 
                 resultado.setText("");
 
-                // Busca em profundidade
                 Stack<No> caminhoProfundidade = BuscaProfundidade(getNoPorValor(no0, raizValor), alvoValor);
                 if (caminhoProfundidade != null) {
-                    resultado.append("Caminho encontrado com busca em profundidade: ");
+                    resultado.append("Caminho encontrado com busca em profundidade:\n");
                     while (!caminhoProfundidade.empty()) {
                         No no = caminhoProfundidade.pop();
                         resultado.append(String.valueOf(no.valor));
@@ -85,13 +84,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                     resultado.append("\n\n");
                 } else {
-                    resultado.append("Busca em profundidade não encontrou o vértice " + alvoValor + "\n");
+                    resultado.append("Busca em profundidade não encontrou o vértice " + alvoValor + "\n\n");
                 }
 
-                // Busca em largura
                 Queue<No> caminhoLargura = BuscaLargura(getNoPorValor(no0, raizValor), alvoValor);
                 if (caminhoLargura != null) {
-                    resultado.append("Caminho encontrado com busca em largura: ");
+                    resultado.append("Caminho encontrado com busca em largura:\n");
                     while (!caminhoLargura.isEmpty()) {
                         No no = caminhoLargura.poll();
                         resultado.append(String.valueOf(no.valor));
@@ -101,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     resultado.append("\n\n");
                 } else {
-                    resultado.append("Busca em largura não encontrou o vértice " + alvoValor + "\n");
+                    resultado.append("Busca em largura não encontrou o vértice " + alvoValor + "\n\n");
                 }
 
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
