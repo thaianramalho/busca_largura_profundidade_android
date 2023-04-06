@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 resultado.setText("");
 
                 // Busca em profundidade
-                Stack<No> caminhoProfundidade = BuscaProfundidade(no0, alvoValor);
+                Stack<No> caminhoProfundidade = BuscaProfundidade(getNoPorValor(no0, raizValor), alvoValor);
                 if (caminhoProfundidade != null) {
                     resultado.append("Caminho encontrado com busca em profundidade: ");
                     while (!caminhoProfundidade.empty()) {
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // Busca em largura
-                Queue<No> caminhoLargura = BuscaLargura(no0, alvoValor);
+                Queue<No> caminhoLargura = BuscaLargura(getNoPorValor(no0, raizValor), alvoValor);
                 if (caminhoLargura != null) {
                     resultado.append("Caminho encontrado com busca em largura: ");
                     while (!caminhoLargura.isEmpty()) {
@@ -110,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         limpar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,6 +120,23 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private No getNoPorValor(No no, int valor) {
+        if (no == null) {
+            return null;
+        }
+        if (no.valor == valor) {
+            return no;
+        }
+        No esquerda = getNoPorValor(no.esquerda, valor);
+        if (esquerda != null) {
+            return esquerda;
+        }
+        No direita = getNoPorValor(no.direita, valor);
+        if (direita != null) {
+            return direita;
+        }
+        return null;
+    }
 
     public static Stack<No> BuscaProfundidade(No no, int buscado) {
         if (no == null) {
@@ -151,8 +167,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static Queue<No> BuscaLargura(No no, int buscado) {
-        Queue<No> fila = new LinkedList<>();
+    public static LinkedList<No> BuscaLargura(No no, int buscado) {
+        LinkedList<No> fila = new LinkedList<>();
         Set<No> visitados = new HashSet<>();
 
         fila.add(no);
@@ -163,12 +179,12 @@ public class MainActivity extends AppCompatActivity {
 
             if (atual.valor == buscado) {
 
-                Queue<No> caminho = new LinkedList<>();
-                caminho.add(atual);
+                LinkedList<No> caminho = new LinkedList<>();
+                caminho.addFirst(atual);
 
                 while (atual.pai != null) {
                     atual = atual.pai;
-                    caminho.add(atual);
+                    caminho.addFirst(atual);
                 }
 
                 return caminho;
