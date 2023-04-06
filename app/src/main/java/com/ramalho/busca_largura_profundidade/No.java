@@ -1,6 +1,7 @@
 package com.ramalho.busca_largura_profundidade;
 
 public class No {
+    public No pai;
     int valor;
     No esquerda = null;
     No direita = null;
