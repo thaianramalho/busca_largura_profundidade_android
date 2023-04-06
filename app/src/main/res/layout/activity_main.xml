@@ -77,7 +77,7 @@
         android:layout_marginTop="50dp"
         android:gravity="center"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/buttonCalcular" />
+        app:layout_constraintTop_toBottomOf="@id/buttonLimpar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

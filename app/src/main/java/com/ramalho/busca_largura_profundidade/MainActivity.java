@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -70,19 +71,23 @@ public class MainActivity extends AppCompatActivity {
                 int raizValor = Integer.parseInt(raiz.getText().toString());
                 int alvoValor = Integer.parseInt(alvo.getText().toString());
 
-                List<No> caminho = new ArrayList<>();
-                if (BuscaProfundidade(no0, alvoValor, caminho)) {
-                    List<Integer> caminhoInt = new ArrayList<>();
-                    for (No no : caminho) {
-                        caminhoInt.add(no.valor);
+                Stack<No> caminho = BuscaProfundidade(no0, alvoValor);
+
+                if (caminho != null) {
+                    resultado.setText("");
+                    while (!caminho.empty()) {
+                        No no = caminho.pop();
+                        resultado.append(String.valueOf(no.valor));
+                        if (!caminho.empty()) {
+                            resultado.append(" -> ");
+                        }
                     }
-                    resultado.setText(caminhoInt.toString());
                 } else {
-                    resultado.setText("Caminho não encontrado");
+                    resultado.setText("O vértice " + alvoValor + " não foi encontrado na árvore.");
                 }
 
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(alvo.getWindowToken(), 0);
             }
         });
 
@@ -98,29 +103,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public static boolean BuscaProfundidade(No no, int buscado, List<No> caminho) {
+    public static Stack<No> BuscaProfundidade(No no, int buscado) {
         if (no == null) {
-            return false;
+            return null;
         }
 
-        System.out.println("Verificando nó número " + no.valor + ". É o procurado?");
-
         if (no.valor == buscado) {
-            System.out.println("Sim! Nó número " + no.valor);
-            caminho.add(no);
-            return true;
+            Stack<No> caminho = new Stack<>();
+            caminho.push(no);
+            return caminho;
         } else {
-            System.out.println("Não. Buscando próxima adjacência.\n");
-            if (BuscaProfundidade(no.esquerda, buscado, caminho)) {
-                caminho.add(no);
-                return true;
+            Stack<No> caminho = null;
+            Stack<No> caminhoEsquerda = BuscaProfundidade(no.esquerda, buscado);
+            if (caminhoEsquerda != null) {
+                caminho = caminhoEsquerda;
+                caminho.push(no);
             }
 
-            if (BuscaProfundidade(no.direita, buscado, caminho)) {
-                caminho.add(no);
-                return true;
+            if (caminho == null) {
+                Stack<No> caminhoDireita = BuscaProfundidade(no.direita, buscado);
+                if (caminhoDireita != null) {
+                    caminho = caminhoDireita;
+                    caminho.push(no);
+                }
             }
-            return false;
+
+            return caminho;
         }
     }
 }
